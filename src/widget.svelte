@@ -187,6 +187,7 @@
 <Modal open={mailDialog} ok={false}>
   <h3 class="text-2xl text-secondary">Message/Tip {name}</h3>
   <Mailform
+    address={weavemail}
     on:mail={() => (mailDialog = false)}
     on:cancel={() => (mailDialog = false)}
   />
