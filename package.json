@@ -10,5 +10,10 @@
     "rollup": "^2.75.7",
     "rollup-plugin-svelte": "^7.1.0",
     "svelte": "^3.48.0"
+  },
+  "scripts": {
+    "build": "rollup -c",
+    "deploy": "arkb deploy dist --use-bundler https://node2.bundlr.network --wallet mywallet.json",
+    "deploy:icons": "arkb deploy social-icons --use-bundler https://node2.bundlr.network --wallet mywallet.json"
   }
 }
