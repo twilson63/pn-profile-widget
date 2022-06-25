@@ -29,19 +29,26 @@
       return;
     }
     content = await encrypt_mail(content, subject, pub_key);
-    var tx = await arweave.createTransaction({
-      target: address,
-      data: arweave.utils.concatBuffers([content]),
-      quantity: tokens,
-    });
-    tx.addTag("App-Name", "permamail");
-    tx.addTag("App-Version", "0.0.2");
-    tx.addTag("Unix-Time", mailTagUnixTime);
-    await arweave.transactions.sign(tx, "use_wallet");
-    await arweave.transactions.post(tx);
+    try {
+      var tx = await arweave.createTransaction({
+        target: address,
+        data: arweave.utils.concatBuffers([content]),
+        quantity: tokens,
+      });
+      tx.addTag("App-Name", "permamail");
+      tx.addTag("App-Version", "0.0.2");
+      tx.addTag("Unix-Time", mailTagUnixTime);
+      await arweave.transactions.sign(tx, "use_wallet");
+      await arweave.transactions.post(tx);
 
-    alert("Mail dispatched!");
-    dispatch("mail", tx.id);
+      alert("Mail dispatched!");
+      e.target.reset();
+      dispatch("mail", tx.id);
+    } catch (err) {
+      alert("ERROR trying to send mail!");
+      e.target.reset();
+      dispatch("cancel");
+    }
   }
 
   async function encrypt_mail(content, subject, pub_key) {
@@ -61,6 +68,7 @@
     // Concatenate and return them
     return arweave.utils.concatBuffers([encrypted_key, encrypted_mail]);
   }
+
   async function decrypt_mail(enc_data, key) {
     var enc_key = new Uint8Array(enc_data.slice(0, 512));
     var enc_mail = new Uint8Array(enc_data.slice(512));
@@ -71,6 +79,7 @@
     );
     return arweave.crypto.decrypt(enc_mail, symmetric_key);
   }
+
   // utils
   async function wallet_to_key(wallet) {
     var w = Object.create(wallet);
@@ -79,6 +88,7 @@
     var algo = { name: "RSA-OAEP", hash: { name: "SHA-256" } };
     return await crypto.subtle.importKey("jwk", w, algo, false, ["decrypt"]);
   }
+
   async function get_public_key(address) {
     var txid = await arweave.wallets.getLastTransactionID(address);
     if (txid == "") {
@@ -107,21 +117,20 @@
     return array;
   }
   function isWalletAvail() {
-    return window.arweaveWallet ? true : false;
+    return Object.keys(window).includes("arweaveWallet");
   }
 </script>
 
 <h1 class="text-3xl modal-title">Write to me!</h1>
-{#if isWalletAvail()}
-  <div class="alert alert-info my-8 flex-col">
-    <p>
-      To send a message, you need an Arweave wallet, go to and install ArConnect
-      in your browser.
-    </p>
-    <a href="https://arconnect.io" target="_blank" rel="noreferrer">ArConnect</a
-    >
-  </div>
-{/if}
+<div class="alert alert-info my-8 flex-col">
+  <p>
+    To send a message, you need an Arweave wallet, if you do not have an Arweave
+    wallet go to and install ArConnect in your browser.
+  </p>
+  <a class="link" href="https://arconnect.io" target="_blank" rel="noreferrer"
+    >ArConnect</a
+  >
+</div>
 <form id="weavemailForm" on:submit|preventDefault={send}>
   <div class="modal-body">
     <input type="hidden" name="to" value={address} />
@@ -157,7 +166,7 @@
   </div>
 
   <div class="mt-8 modal-action">
-    <button class="btn" disabled={isWalletAvail()}>Send</button>
+    <button class="btn">Send</button>
     <button
       type="button"
       class="btn btn-outline"
