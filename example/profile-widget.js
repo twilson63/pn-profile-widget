@@ -2,6 +2,12 @@
     'use strict';
 
     function noop() { }
+    function assign(tar, src) {
+        // @ts-ignore
+        for (const k in src)
+            tar[k] = src[k];
+        return tar;
+    }
     function run(fn) {
         return fn();
     }
@@ -28,6 +34,52 @@
     function is_empty(obj) {
         return Object.keys(obj).length === 0;
     }
+    function create_slot(definition, ctx, $$scope, fn) {
+        if (definition) {
+            const slot_ctx = get_slot_context(definition, ctx, $$scope, fn);
+            return definition[0](slot_ctx);
+        }
+    }
+    function get_slot_context(definition, ctx, $$scope, fn) {
+        return definition[1] && fn
+            ? assign($$scope.ctx.slice(), definition[1](fn(ctx)))
+            : $$scope.ctx;
+    }
+    function get_slot_changes(definition, $$scope, dirty, fn) {
+        if (definition[2] && fn) {
+            const lets = definition[2](fn(dirty));
+            if ($$scope.dirty === undefined) {
+                return lets;
+            }
+            if (typeof lets === 'object') {
+                const merged = [];
+                const len = Math.max($$scope.dirty.length, lets.length);
+                for (let i = 0; i < len; i += 1) {
+                    merged[i] = $$scope.dirty[i] | lets[i];
+                }
+                return merged;
+            }
+            return $$scope.dirty | lets;
+        }
+        return $$scope.dirty;
+    }
+    function update_slot_base(slot, slot_definition, ctx, $$scope, slot_changes, get_slot_context_fn) {
+        if (slot_changes) {
+            const slot_context = get_slot_context(slot_definition, ctx, $$scope, get_slot_context_fn);
+            slot.p(slot_context, slot_changes);
+        }
+    }
+    function get_all_dirty_from_scope($$scope) {
+        if ($$scope.ctx.length > 32) {
+            const dirty = [];
+            const length = $$scope.ctx.length / 32;
+            for (let i = 0; i < length; i++) {
+                dirty[i] = -1;
+            }
+            return dirty;
+        }
+        return -1;
+    }
     function append(target, node) {
         target.appendChild(node);
     }
@@ -45,6 +97,17 @@
     }
     function space() {
         return text(' ');
+    }
+    function listen(node, event, handler, options) {
+        node.addEventListener(event, handler, options);
+        return () => node.removeEventListener(event, handler, options);
+    }
+    function prevent_default(fn) {
+        return function (event) {
+            event.preventDefault();
+            // @ts-ignore
+            return fn.call(this, event);
+        };
     }
     function attr(node, attribute, value) {
         if (value == null)
@@ -68,10 +131,36 @@
             node.style.setProperty(key, value, important ? 'important' : '');
         }
     }
+    function custom_event(type, detail, { bubbles = false, cancelable = false } = {}) {
+        const e = document.createEvent('CustomEvent');
+        e.initCustomEvent(type, bubbles, cancelable, detail);
+        return e;
+    }
 
     let current_component;
     function set_current_component(component) {
         current_component = component;
+    }
+    function get_current_component() {
+        if (!current_component)
+            throw new Error('Function called outside component initialization');
+        return current_component;
+    }
+    function createEventDispatcher() {
+        const component = get_current_component();
+        return (type, detail, { cancelable = false } = {}) => {
+            const callbacks = component.$$.callbacks[type];
+            if (callbacks) {
+                // TODO are there situations where events could be dispatched
+                // in a server (non-DOM) environment?
+                const event = custom_event(type, detail, { cancelable });
+                callbacks.slice().forEach(fn => {
+                    fn.call(component, event);
+                });
+                return !event.defaultPrevented;
+            }
+            return true;
+        };
     }
 
     const dirty_components = [];
@@ -156,11 +245,31 @@
         }
     }
     const outroing = new Set();
+    let outros;
     function transition_in(block, local) {
         if (block && block.i) {
             outroing.delete(block);
             block.i(local);
         }
+    }
+    function transition_out(block, local, detach, callback) {
+        if (block && block.o) {
+            if (outroing.has(block))
+                return;
+            outroing.add(block);
+            outros.c.push(() => {
+                outroing.delete(block);
+                if (callback) {
+                    if (detach)
+                        block.d(1);
+                    callback();
+                }
+            });
+            block.o(local);
+        }
+    }
+    function create_component(block) {
+        block && block.c();
     }
     function mount_component(component, target, anchor, customElement) {
         const { fragment, on_mount, on_destroy, after_update } = component.$$;
@@ -288,6 +397,510 @@
         }
     }
 
+    /* src/components/modal.svelte generated by Svelte v3.48.0 */
+
+    function create_if_block$2(ctx) {
+    	let div;
+    	let button;
+    	let t1;
+    	let mounted;
+    	let dispose;
+    	let if_block = /*cancel*/ ctx[3] && create_if_block_1$1(ctx);
+
+    	return {
+    		c() {
+    			div = element("div");
+    			button = element("button");
+    			button.textContent = "OK";
+    			t1 = space();
+    			if (if_block) if_block.c();
+    			attr(button, "class", "btn");
+    			attr(div, "class", "modal-action");
+    		},
+    		m(target, anchor) {
+    			insert(target, div, anchor);
+    			append(div, button);
+    			append(div, t1);
+    			if (if_block) if_block.m(div, null);
+
+    			if (!mounted) {
+    				dispose = listen(button, "click", /*okClick*/ ctx[4]);
+    				mounted = true;
+    			}
+    		},
+    		p(ctx, dirty) {
+    			if (/*cancel*/ ctx[3]) {
+    				if (if_block) {
+    					if_block.p(ctx, dirty);
+    				} else {
+    					if_block = create_if_block_1$1(ctx);
+    					if_block.c();
+    					if_block.m(div, null);
+    				}
+    			} else if (if_block) {
+    				if_block.d(1);
+    				if_block = null;
+    			}
+    		},
+    		d(detaching) {
+    			if (detaching) detach(div);
+    			if (if_block) if_block.d();
+    			mounted = false;
+    			dispose();
+    		}
+    	};
+    }
+
+    // (24:8) {#if cancel}
+    function create_if_block_1$1(ctx) {
+    	let button;
+    	let mounted;
+    	let dispose;
+
+    	return {
+    		c() {
+    			button = element("button");
+    			button.textContent = "Cancel";
+    			attr(button, "class", "btn btn-outline");
+    		},
+    		m(target, anchor) {
+    			insert(target, button, anchor);
+
+    			if (!mounted) {
+    				dispose = listen(button, "click", /*cancelClick*/ ctx[5]);
+    				mounted = true;
+    			}
+    		},
+    		p: noop,
+    		d(detaching) {
+    			if (detaching) detach(button);
+    			mounted = false;
+    			dispose();
+    		}
+    	};
+    }
+
+    function create_fragment$2(ctx) {
+    	let input;
+    	let t0;
+    	let div1;
+    	let div0;
+    	let t1;
+    	let current;
+    	let mounted;
+    	let dispose;
+    	const default_slot_template = /*#slots*/ ctx[7].default;
+    	const default_slot = create_slot(default_slot_template, ctx, /*$$scope*/ ctx[6], null);
+    	let if_block = /*ok*/ ctx[2] && create_if_block$2(ctx);
+
+    	return {
+    		c() {
+    			input = element("input");
+    			t0 = space();
+    			div1 = element("div");
+    			div0 = element("div");
+    			if (default_slot) default_slot.c();
+    			t1 = space();
+    			if (if_block) if_block.c();
+    			attr(input, "type", "checkbox");
+    			attr(input, "id", /*id*/ ctx[1]);
+    			attr(input, "class", "modal-toggle");
+    			attr(div0, "class", "modal-box");
+    			attr(div1, "class", "modal");
+    		},
+    		m(target, anchor) {
+    			insert(target, input, anchor);
+    			input.checked = /*open*/ ctx[0];
+    			insert(target, t0, anchor);
+    			insert(target, div1, anchor);
+    			append(div1, div0);
+
+    			if (default_slot) {
+    				default_slot.m(div0, null);
+    			}
+
+    			append(div0, t1);
+    			if (if_block) if_block.m(div0, null);
+    			current = true;
+
+    			if (!mounted) {
+    				dispose = listen(input, "change", /*input_change_handler*/ ctx[8]);
+    				mounted = true;
+    			}
+    		},
+    		p(ctx, [dirty]) {
+    			if (!current || dirty & /*id*/ 2) {
+    				attr(input, "id", /*id*/ ctx[1]);
+    			}
+
+    			if (dirty & /*open*/ 1) {
+    				input.checked = /*open*/ ctx[0];
+    			}
+
+    			if (default_slot) {
+    				if (default_slot.p && (!current || dirty & /*$$scope*/ 64)) {
+    					update_slot_base(
+    						default_slot,
+    						default_slot_template,
+    						ctx,
+    						/*$$scope*/ ctx[6],
+    						!current
+    						? get_all_dirty_from_scope(/*$$scope*/ ctx[6])
+    						: get_slot_changes(default_slot_template, /*$$scope*/ ctx[6], dirty, null),
+    						null
+    					);
+    				}
+    			}
+
+    			if (/*ok*/ ctx[2]) {
+    				if (if_block) {
+    					if_block.p(ctx, dirty);
+    				} else {
+    					if_block = create_if_block$2(ctx);
+    					if_block.c();
+    					if_block.m(div0, null);
+    				}
+    			} else if (if_block) {
+    				if_block.d(1);
+    				if_block = null;
+    			}
+    		},
+    		i(local) {
+    			if (current) return;
+    			transition_in(default_slot, local);
+    			current = true;
+    		},
+    		o(local) {
+    			transition_out(default_slot, local);
+    			current = false;
+    		},
+    		d(detaching) {
+    			if (detaching) detach(input);
+    			if (detaching) detach(t0);
+    			if (detaching) detach(div1);
+    			if (default_slot) default_slot.d(detaching);
+    			if (if_block) if_block.d();
+    			mounted = false;
+    			dispose();
+    		}
+    	};
+    }
+
+    function instance$2($$self, $$props, $$invalidate) {
+    	let { $$slots: slots = {}, $$scope } = $$props;
+    	let { id = "1234" } = $$props;
+    	let { open = false } = $$props;
+    	let { ok = true } = $$props;
+    	let { cancel = false } = $$props;
+    	const dispatch = createEventDispatcher();
+
+    	function okClick() {
+    		$$invalidate(0, open = false);
+    		dispatch("click");
+    	}
+
+    	function cancelClick() {
+    		dispatch("cancel");
+    	}
+
+    	function input_change_handler() {
+    		open = this.checked;
+    		$$invalidate(0, open);
+    	}
+
+    	$$self.$$set = $$props => {
+    		if ('id' in $$props) $$invalidate(1, id = $$props.id);
+    		if ('open' in $$props) $$invalidate(0, open = $$props.open);
+    		if ('ok' in $$props) $$invalidate(2, ok = $$props.ok);
+    		if ('cancel' in $$props) $$invalidate(3, cancel = $$props.cancel);
+    		if ('$$scope' in $$props) $$invalidate(6, $$scope = $$props.$$scope);
+    	};
+
+    	return [
+    		open,
+    		id,
+    		ok,
+    		cancel,
+    		okClick,
+    		cancelClick,
+    		$$scope,
+    		slots,
+    		input_change_handler
+    	];
+    }
+
+    class Modal extends SvelteComponent {
+    	constructor(options) {
+    		super();
+    		init(this, options, instance$2, create_fragment$2, safe_not_equal, { id: 1, open: 0, ok: 2, cancel: 3 });
+    	}
+    }
+
+    /* src/components/mailform.svelte generated by Svelte v3.48.0 */
+
+    function create_if_block$1(ctx) {
+    	let div;
+
+    	return {
+    		c() {
+    			div = element("div");
+
+    			div.innerHTML = `<p>To send a message, you need an Arweave wallet, go to and install ArConnect
+      in your browser.</p> 
+    <a href="https://arconnect.io" target="_blank" rel="noreferrer">ArConnect</a>`;
+
+    			attr(div, "class", "alert alert-info my-8 flex-col");
+    		},
+    		m(target, anchor) {
+    			insert(target, div, anchor);
+    		},
+    		d(detaching) {
+    			if (detaching) detach(div);
+    		}
+    	};
+    }
+
+    function create_fragment$1(ctx) {
+    	let h1;
+    	let t1;
+    	let t2;
+    	let form;
+    	let div3;
+    	let input0;
+    	let t3;
+    	let div0;
+    	let t6;
+    	let div1;
+    	let t9;
+    	let div2;
+    	let t12;
+    	let div4;
+    	let button0;
+    	let t13;
+    	let t14;
+    	let button1;
+    	let mounted;
+    	let dispose;
+    	let if_block = !window.arweaveWallet && create_if_block$1();
+
+    	return {
+    		c() {
+    			h1 = element("h1");
+    			h1.textContent = "Write to me!";
+    			t1 = space();
+    			if (if_block) if_block.c();
+    			t2 = space();
+    			form = element("form");
+    			div3 = element("div");
+    			input0 = element("input");
+    			t3 = space();
+    			div0 = element("div");
+
+    			div0.innerHTML = `<label class="label" for="subject">Subject</label> 
+      <input class="input input-bordered" type="text" placeholder="Subject" name="subject" id="subject"/>`;
+
+    			t6 = space();
+    			div1 = element("div");
+
+    			div1.innerHTML = `<label class="label" for="content">Mail contents</label> 
+      <textarea class="textarea textarea-bordered h-16" id="content" name="content" placeholder="Hello there..."></textarea>`;
+
+    			t9 = space();
+    			div2 = element("div");
+
+    			div2.innerHTML = `<label class="label" for="donate">(Optional) Send me AR</label> 
+      <input class="input input-bordered" type="text" placeholder="0 AR" name="donate" id="donate"/>`;
+
+    			t12 = space();
+    			div4 = element("div");
+    			button0 = element("button");
+    			t13 = text("Send");
+    			t14 = space();
+    			button1 = element("button");
+    			button1.textContent = "Cancel";
+    			attr(h1, "class", "text-3xl modal-title");
+    			attr(input0, "type", "hidden");
+    			attr(input0, "name", "to");
+    			input0.value = /*address*/ ctx[0];
+    			attr(div0, "class", "form-control");
+    			attr(div1, "class", "form-control");
+    			attr(div2, "class", "form-control");
+    			attr(div3, "class", "modal-body");
+    			attr(button0, "class", "btn");
+    			button0.disabled = !window.arweaveWallet;
+    			attr(button1, "type", "button");
+    			attr(button1, "class", "btn btn-outline");
+    			attr(div4, "class", "mt-8 modal-action");
+    			attr(form, "id", "weavemailForm");
+    		},
+    		m(target, anchor) {
+    			insert(target, h1, anchor);
+    			insert(target, t1, anchor);
+    			if (if_block) if_block.m(target, anchor);
+    			insert(target, t2, anchor);
+    			insert(target, form, anchor);
+    			append(form, div3);
+    			append(div3, input0);
+    			append(div3, t3);
+    			append(div3, div0);
+    			append(div3, t6);
+    			append(div3, div1);
+    			append(div3, t9);
+    			append(div3, div2);
+    			append(form, t12);
+    			append(form, div4);
+    			append(div4, button0);
+    			append(button0, t13);
+    			append(div4, t14);
+    			append(div4, button1);
+
+    			if (!mounted) {
+    				dispose = [
+    					listen(button1, "click", /*click_handler*/ ctx[3]),
+    					listen(form, "submit", prevent_default(/*send*/ ctx[2]))
+    				];
+
+    				mounted = true;
+    			}
+    		},
+    		p(ctx, [dirty]) {
+    			if (dirty & /*address*/ 1) {
+    				input0.value = /*address*/ ctx[0];
+    			}
+    		},
+    		i: noop,
+    		o: noop,
+    		d(detaching) {
+    			if (detaching) detach(h1);
+    			if (detaching) detach(t1);
+    			if (if_block) if_block.d(detaching);
+    			if (detaching) detach(t2);
+    			if (detaching) detach(form);
+    			mounted = false;
+    			run_all(dispose);
+    		}
+    	};
+    }
+
+    async function encrypt_mail(content, subject, pub_key) {
+    	var content_encoder = new TextEncoder();
+    	var newFormat = JSON.stringify({ subject, body: content });
+    	var mail_buf = content_encoder.encode(newFormat);
+    	var key_buf = await generate_random_bytes(256);
+
+    	// Encrypt data segments
+    	var encrypted_mail = await arweave.crypto.encrypt(mail_buf, key_buf);
+
+    	var encrypted_key = await window.crypto.subtle.encrypt({ name: "RSA-OAEP" }, pub_key, key_buf);
+
+    	// Concatenate and return them
+    	return arweave.utils.concatBuffers([encrypted_key, encrypted_mail]);
+    }
+
+    async function get_public_key(address) {
+    	var txid = await arweave.wallets.getLastTransactionID(address);
+
+    	if (txid == "") {
+    		return undefined;
+    	}
+
+    	var tx = await arweave.transactions.get(txid);
+
+    	if (tx == undefined) {
+    		return undefined;
+    	}
+
+    	arweave.utils.b64UrlToBuffer(tx.owner);
+
+    	var keyData = {
+    		kty: "RSA",
+    		e: "AQAB",
+    		n: tx.owner,
+    		alg: "RSA-OAEP-256",
+    		ext: true
+    	};
+
+    	var algo = {
+    		name: "RSA-OAEP",
+    		hash: { name: "SHA-256" }
+    	};
+
+    	return await crypto.subtle.importKey("jwk", keyData, algo, false, ["encrypt"]);
+    }
+
+    async function generate_random_bytes(length) {
+    	var array = new Uint8Array(length);
+    	window.crypto.getRandomValues(array);
+    	return array;
+    }
+
+    function instance$1($$self, $$props, $$invalidate) {
+    	let { address = "" } = $$props;
+    	const dispatch = createEventDispatcher();
+
+    	async function send(e) {
+    		if (!Arweave) {
+    			alert("Arweave is required!");
+    		}
+
+    		const arweave = Arweave.init({});
+
+    		if (!arweaveWallet) {
+    			alert("ArConnect is required!");
+    		}
+
+    		const formData = new FormData(e.target);
+    		const address = formData.get("to");
+    		var content = formData.get("content");
+    		const subject = formData.get("subject");
+    		const mailTagUnixTime = Math.round(new Date().getTime() / 1000);
+    		var tokens = formData.get("donate");
+
+    		if (tokens == "") {
+    			tokens = "0";
+    		}
+
+    		tokens = arweave.ar.arToWinston(tokens);
+    		var pub_key = await get_public_key(address);
+
+    		if (pub_key == undefined) {
+    			alert("Recipient has to send a transaction to the network, first!");
+    			return;
+    		}
+
+    		content = await encrypt_mail(content, subject, pub_key);
+
+    		var tx = await arweave.createTransaction({
+    			target: address,
+    			data: arweave.utils.concatBuffers([content]),
+    			quantity: tokens
+    		});
+
+    		tx.addTag("App-Name", "permamail");
+    		tx.addTag("App-Version", "0.0.2");
+    		tx.addTag("Unix-Time", mailTagUnixTime);
+    		await arweave.transactions.sign(tx, "use_wallet");
+    		await arweave.transactions.post(tx);
+    		alert("Mail dispatched!");
+    		dispatch("mail", tx.id);
+    	}
+
+    	const click_handler = () => dispatch("cancel");
+
+    	$$self.$$set = $$props => {
+    		if ('address' in $$props) $$invalidate(0, address = $$props.address);
+    	};
+
+    	return [address, dispatch, send, click_handler];
+    }
+
+    class Mailform extends SvelteComponent {
+    	constructor(options) {
+    		super();
+    		init(this, options, instance$1, create_fragment$1, safe_not_equal, { address: 0 });
+    	}
+    }
+
     /* src/widget.svelte generated by Svelte v3.48.0 */
 
     function create_if_block_8(ctx) {
@@ -323,7 +936,7 @@
     	};
     }
 
-    // (44:6) {#if !isEmpty(linkedin)}
+    // (49:8) {#if !isEmpty(linkedin)}
     function create_if_block_7(ctx) {
     	let li;
     	let a;
@@ -357,7 +970,7 @@
     	};
     }
 
-    // (60:6) {#if !isEmpty(github)}
+    // (65:8) {#if !isEmpty(github)}
     function create_if_block_6(ctx) {
     	let li;
     	let a;
@@ -391,7 +1004,7 @@
     	};
     }
 
-    // (76:6) {#if !isEmpty(discord)}
+    // (81:8) {#if !isEmpty(discord)}
     function create_if_block_5(ctx) {
     	let li;
     	let a;
@@ -425,41 +1038,39 @@
     	};
     }
 
-    // (92:6) {#if !isEmpty(weavemail)}
+    // (97:8) {#if !isEmpty(weavemail)}
     function create_if_block_4(ctx) {
     	let li;
-    	let a;
     	let button;
-    	let a_href_value;
+    	let mounted;
+    	let dispose;
 
     	return {
     		c() {
     			li = element("li");
-    			a = element("a");
     			button = element("button");
     			set_style(button, "background-image", "url(" + icon_repo + "/arweave-mail-icon.png)");
     			attr(button, "class", "w-[94px] h-[94px] m-5 rounded-xl bg-cover bg-no-repeat");
-    			attr(a, "href", a_href_value = "https://instagram.com/" + /*weavemail*/ ctx[6]);
-    			attr(a, "target", "_blank");
-    			attr(a, "rel", "noreferrer");
     		},
     		m(target, anchor) {
     			insert(target, li, anchor);
-    			append(li, a);
-    			append(a, button);
-    		},
-    		p(ctx, dirty) {
-    			if (dirty & /*weavemail*/ 64 && a_href_value !== (a_href_value = "https://instagram.com/" + /*weavemail*/ ctx[6])) {
-    				attr(a, "href", a_href_value);
+    			append(li, button);
+
+    			if (!mounted) {
+    				dispose = listen(button, "click", /*click_handler*/ ctx[14]);
+    				mounted = true;
     			}
     		},
+    		p: noop,
     		d(detaching) {
     			if (detaching) detach(li);
+    			mounted = false;
+    			dispose();
     		}
     	};
     }
 
-    // (108:6) {#if !isEmpty(twitch)}
+    // (108:8) {#if !isEmpty(twitch)}
     function create_if_block_3(ctx) {
     	let li;
     	let a;
@@ -493,7 +1104,7 @@
     	};
     }
 
-    // (124:6) {#if !isEmpty(instagram)}
+    // (124:8) {#if !isEmpty(instagram)}
     function create_if_block_2(ctx) {
     	let li;
     	let a;
@@ -527,7 +1138,7 @@
     	};
     }
 
-    // (140:6) {#if !isEmpty(youtube)}
+    // (140:8) {#if !isEmpty(youtube)}
     function create_if_block_1(ctx) {
     	let li;
     	let a;
@@ -561,7 +1172,7 @@
     	};
     }
 
-    // (156:6) {#if !isEmpty(twitter)}
+    // (156:8) {#if !isEmpty(twitter)}
     function create_if_block(ctx) {
     	let li;
     	let a;
@@ -595,7 +1206,57 @@
     	};
     }
 
+    // (187:0) <Modal open={mailDialog} ok={false}>
+    function create_default_slot(ctx) {
+    	let h3;
+    	let t0;
+    	let t1;
+    	let t2;
+    	let mailform;
+    	let current;
+    	mailform = new Mailform({});
+    	mailform.$on("mail", /*mail_handler*/ ctx[15]);
+    	mailform.$on("cancel", /*cancel_handler*/ ctx[16]);
+
+    	return {
+    		c() {
+    			h3 = element("h3");
+    			t0 = text("Message/Tip ");
+    			t1 = text(/*name*/ ctx[0]);
+    			t2 = space();
+    			create_component(mailform.$$.fragment);
+    			attr(h3, "class", "text-2xl text-secondary");
+    		},
+    		m(target, anchor) {
+    			insert(target, h3, anchor);
+    			append(h3, t0);
+    			append(h3, t1);
+    			insert(target, t2, anchor);
+    			mount_component(mailform, target, anchor);
+    			current = true;
+    		},
+    		p(ctx, dirty) {
+    			if (!current || dirty & /*name*/ 1) set_data(t1, /*name*/ ctx[0]);
+    		},
+    		i(local) {
+    			if (current) return;
+    			transition_in(mailform.$$.fragment, local);
+    			current = true;
+    		},
+    		o(local) {
+    			transition_out(mailform.$$.fragment, local);
+    			current = false;
+    		},
+    		d(detaching) {
+    			if (detaching) detach(h3);
+    			if (detaching) detach(t2);
+    			destroy_component(mailform, detaching);
+    		}
+    	};
+    }
+
     function create_fragment(ctx) {
+    	let div4;
     	let div3;
     	let div2;
     	let ul;
@@ -628,6 +1289,9 @@
     	let p1;
     	let t12;
     	let div3_class_value;
+    	let t13;
+    	let modal;
+    	let current;
     	let if_block0 = show_if_8 && create_if_block_8(ctx);
     	let if_block1 = show_if_7 && create_if_block_7(ctx);
     	let if_block2 = show_if_6 && create_if_block_6(ctx);
@@ -638,8 +1302,18 @@
     	let if_block7 = show_if_1 && create_if_block_1(ctx);
     	let if_block8 = show_if && create_if_block(ctx);
 
+    	modal = new Modal({
+    			props: {
+    				open: /*mailDialog*/ ctx[13],
+    				ok: false,
+    				$$slots: { default: [create_default_slot] },
+    				$$scope: { ctx }
+    			}
+    		});
+
     	return {
     		c() {
+    			div4 = element("div");
     			div3 = element("div");
     			div2 = element("div");
     			ul = element("ul");
@@ -670,6 +1344,8 @@
     			t11 = space();
     			p1 = element("p");
     			t12 = text(/*bio*/ ctx[1]);
+    			t13 = space();
+    			create_component(modal.$$.fragment);
     			attr(ul, "class", "w-full flex flex-row-reverse p-5");
     			attr(img, "alt", "avatar");
     			if (!src_url_equal(img.src, img_src_value = /*avatar*/ ctx[11])) attr(img, "src", img_src_value);
@@ -680,9 +1356,11 @@
     			attr(div1, "class", "w-full flex m-5 absolute top-[565px] left-0");
     			attr(div2, "class", "w-full h-full flex flex-col justify-between relative");
     			attr(div3, "class", div3_class_value = "bg-[url('" + /*background*/ ctx[12] + "')] bg-cover bg-no-repeat w-full h-[660px] mb-[50px]");
+    			attr(div4, "class", "h-[900px]");
     		},
     		m(target, anchor) {
-    			insert(target, div3, anchor);
+    			insert(target, div4, anchor);
+    			append(div4, div3);
     			append(div3, div2);
     			append(div2, ul);
     			if (if_block0) if_block0.m(ul, null);
@@ -712,6 +1390,9 @@
     			append(div0, t11);
     			append(div0, p1);
     			append(p1, t12);
+    			insert(target, t13, anchor);
+    			mount_component(modal, target, anchor);
+    			current = true;
     		},
     		p(ctx, [dirty]) {
     			if (dirty & /*facebook*/ 32) show_if_8 = !isEmpty(/*facebook*/ ctx[5]);
@@ -849,21 +1530,37 @@
     				if_block8 = null;
     			}
 
-    			if (dirty & /*avatar*/ 2048 && !src_url_equal(img.src, img_src_value = /*avatar*/ ctx[11])) {
+    			if (!current || dirty & /*avatar*/ 2048 && !src_url_equal(img.src, img_src_value = /*avatar*/ ctx[11])) {
     				attr(img, "src", img_src_value);
     			}
 
-    			if (dirty & /*name*/ 1) set_data(t10, /*name*/ ctx[0]);
-    			if (dirty & /*bio*/ 2) set_data(t12, /*bio*/ ctx[1]);
+    			if (!current || dirty & /*name*/ 1) set_data(t10, /*name*/ ctx[0]);
+    			if (!current || dirty & /*bio*/ 2) set_data(t12, /*bio*/ ctx[1]);
 
-    			if (dirty & /*background*/ 4096 && div3_class_value !== (div3_class_value = "bg-[url('" + /*background*/ ctx[12] + "')] bg-cover bg-no-repeat w-full h-[660px] mb-[50px]")) {
+    			if (!current || dirty & /*background*/ 4096 && div3_class_value !== (div3_class_value = "bg-[url('" + /*background*/ ctx[12] + "')] bg-cover bg-no-repeat w-full h-[660px] mb-[50px]")) {
     				attr(div3, "class", div3_class_value);
     			}
+
+    			const modal_changes = {};
+    			if (dirty & /*mailDialog*/ 8192) modal_changes.open = /*mailDialog*/ ctx[13];
+
+    			if (dirty & /*$$scope, mailDialog, name*/ 139265) {
+    				modal_changes.$$scope = { dirty, ctx };
+    			}
+
+    			modal.$set(modal_changes);
     		},
-    		i: noop,
-    		o: noop,
+    		i(local) {
+    			if (current) return;
+    			transition_in(modal.$$.fragment, local);
+    			current = true;
+    		},
+    		o(local) {
+    			transition_out(modal.$$.fragment, local);
+    			current = false;
+    		},
     		d(detaching) {
-    			if (detaching) detach(div3);
+    			if (detaching) detach(div4);
     			if (if_block0) if_block0.d();
     			if (if_block1) if_block1.d();
     			if (if_block2) if_block2.d();
@@ -873,6 +1570,8 @@
     			if (if_block6) if_block6.d();
     			if (if_block7) if_block7.d();
     			if (if_block8) if_block8.d();
+    			if (detaching) detach(t13);
+    			destroy_component(modal, detaching);
     		}
     	};
     }
@@ -897,6 +1596,10 @@
     	let { twitch = "" } = $$props;
     	let { avatar = "" } = $$props;
     	let { background = "" } = $$props;
+    	let mailDialog = false;
+    	const click_handler = () => $$invalidate(13, mailDialog = true);
+    	const mail_handler = () => $$invalidate(13, mailDialog = false);
+    	const cancel_handler = () => $$invalidate(13, mailDialog = false);
 
     	$$self.$$set = $$props => {
     		if ('name' in $$props) $$invalidate(0, name = $$props.name);
@@ -927,7 +1630,11 @@
     		youtube,
     		twitch,
     		avatar,
-    		background
+    		background,
+    		mailDialog,
+    		click_handler,
+    		mail_handler,
+    		cancel_handler
     	];
     }
 
