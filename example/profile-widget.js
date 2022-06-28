@@ -923,7 +923,7 @@
     	};
     }
 
-    // (49:8) {#if !isEmpty(linkedin)}
+    // (51:8) {#if !isEmpty(linkedin)}
     function create_if_block_7(ctx) {
     	let li;
     	let a;
@@ -957,7 +957,7 @@
     	};
     }
 
-    // (65:8) {#if !isEmpty(github)}
+    // (67:8) {#if !isEmpty(github)}
     function create_if_block_6(ctx) {
     	let li;
     	let a;
@@ -991,7 +991,7 @@
     	};
     }
 
-    // (81:8) {#if !isEmpty(discord)}
+    // (83:8) {#if !isEmpty(discord)}
     function create_if_block_5(ctx) {
     	let li;
     	let a;
@@ -1025,7 +1025,7 @@
     	};
     }
 
-    // (97:8) {#if !isEmpty(weavemail)}
+    // (99:8) {#if !isEmpty(weavemail)}
     function create_if_block_4(ctx) {
     	let li;
     	let button;
@@ -1044,7 +1044,7 @@
     			append(li, button);
 
     			if (!mounted) {
-    				dispose = listen(button, "click", /*click_handler*/ ctx[14]);
+    				dispose = listen(button, "click", /*click_handler*/ ctx[16]);
     				mounted = true;
     			}
     		},
@@ -1057,7 +1057,7 @@
     	};
     }
 
-    // (108:8) {#if !isEmpty(twitch)}
+    // (110:8) {#if !isEmpty(twitch)}
     function create_if_block_3(ctx) {
     	let li;
     	let a;
@@ -1091,7 +1091,7 @@
     	};
     }
 
-    // (124:8) {#if !isEmpty(instagram)}
+    // (126:8) {#if !isEmpty(instagram)}
     function create_if_block_2(ctx) {
     	let li;
     	let a;
@@ -1125,7 +1125,7 @@
     	};
     }
 
-    // (140:8) {#if !isEmpty(youtube)}
+    // (142:8) {#if !isEmpty(youtube)}
     function create_if_block_1(ctx) {
     	let li;
     	let a;
@@ -1159,7 +1159,7 @@
     	};
     }
 
-    // (156:8) {#if !isEmpty(twitter)}
+    // (158:8) {#if !isEmpty(twitter)}
     function create_if_block(ctx) {
     	let li;
     	let a;
@@ -1193,7 +1193,7 @@
     	};
     }
 
-    // (187:0) <Modal open={mailDialog} ok={false}>
+    // (189:0) <Modal open={mailDialog} ok={false}>
     function create_default_slot(ctx) {
     	let h3;
     	let t0;
@@ -1202,8 +1202,8 @@
     	let mailform;
     	let current;
     	mailform = new Mailform({ props: { address: /*weavemail*/ ctx[6] } });
-    	mailform.$on("mail", /*mail_handler*/ ctx[15]);
-    	mailform.$on("cancel", /*cancel_handler*/ ctx[16]);
+    	mailform.$on("mail", /*mail_handler*/ ctx[17]);
+    	mailform.$on("cancel", /*cancel_handler*/ ctx[18]);
 
     	return {
     		c() {
@@ -1278,7 +1278,6 @@
     	let t11;
     	let p1;
     	let t12;
-    	let div3_class_value;
     	let t13;
     	let modal;
     	let current;
@@ -1294,7 +1293,7 @@
 
     	modal = new Modal({
     			props: {
-    				open: /*mailDialog*/ ctx[13],
+    				open: /*mailDialog*/ ctx[11],
     				ok: false,
     				$$slots: { default: [create_default_slot] },
     				$$scope: { ctx }
@@ -1338,14 +1337,14 @@
     			create_component(modal.$$.fragment);
     			attr(ul, "class", "w-full flex flex-row-reverse p-5");
     			attr(img, "alt", "avatar");
-    			if (!src_url_equal(img.src, img_src_value = /*avatar*/ ctx[11])) attr(img, "src", img_src_value);
-    			attr(img, "class", "ml-5 mr-5 shadow-xl rounded-full border-4 max-w-[265px] bg-base-300");
+    			if (!src_url_equal(img.src, img_src_value = /*avatarUrl*/ ctx[13])) attr(img, "src", img_src_value);
+    			attr(img, "class", "ml-5 mr-5 shadow-xl rounded-full border-4 h-[250px] w-[250px] bg-base-300");
     			attr(p0, "class", "m-1 text-3xl tracking-tight text-base-600");
     			attr(p1, "class", "m-1 text-xl text-base-600");
     			attr(div0, "class", "flex flex-col justify-center");
     			attr(div1, "class", "w-full flex m-5 absolute top-[565px] left-0");
     			attr(div2, "class", "w-full h-full flex flex-col justify-between relative");
-    			attr(div3, "class", div3_class_value = "bg-[url('" + /*background*/ ctx[12] + "')] bg-cover bg-no-repeat w-full h-[660px] mb-[50px]");
+    			attr(div3, "class", "bg-[url('" + /*backgroundUrl*/ ctx[12] + "')] bg-cover bg-no-repeat w-full h-[660px] mb-[50px]");
     			attr(div4, "class", "h-[900px]");
     		},
     		m(target, anchor) {
@@ -1520,21 +1519,12 @@
     				if_block8 = null;
     			}
 
-    			if (!current || dirty & /*avatar*/ 2048 && !src_url_equal(img.src, img_src_value = /*avatar*/ ctx[11])) {
-    				attr(img, "src", img_src_value);
-    			}
-
     			if (!current || dirty & /*name*/ 1) set_data(t10, /*name*/ ctx[0]);
     			if (!current || dirty & /*bio*/ 2) set_data(t12, /*bio*/ ctx[1]);
-
-    			if (!current || dirty & /*background*/ 4096 && div3_class_value !== (div3_class_value = "bg-[url('" + /*background*/ ctx[12] + "')] bg-cover bg-no-repeat w-full h-[660px] mb-[50px]")) {
-    				attr(div3, "class", div3_class_value);
-    			}
-
     			const modal_changes = {};
-    			if (dirty & /*mailDialog*/ 8192) modal_changes.open = /*mailDialog*/ ctx[13];
+    			if (dirty & /*mailDialog*/ 2048) modal_changes.open = /*mailDialog*/ ctx[11];
 
-    			if (dirty & /*$$scope, weavemail, mailDialog, name*/ 139329) {
+    			if (dirty & /*$$scope, weavemail, mailDialog, name*/ 526401) {
     				modal_changes.$$scope = { dirty, ctx };
     			}
 
@@ -1566,7 +1556,7 @@
     	};
     }
 
-    let icon_repo = "https://social-icons.arweave.dev";
+    let icon_repo = "https://arweave.net/T2Kh2uOv3myw8L6BPE6kySs2QXjh8R3B1KolcW_MFQA";
 
     function isEmpty(v) {
     	return v.length === 0 ? true : false;
@@ -1585,11 +1575,13 @@
     	let { youtube = "" } = $$props;
     	let { twitch = "" } = $$props;
     	let { avatar = "" } = $$props;
-    	let { background = "" } = $$props;
+    	let { background = null } = $$props;
     	let mailDialog = false;
-    	const click_handler = () => $$invalidate(13, mailDialog = true);
-    	const mail_handler = () => $$invalidate(13, mailDialog = false);
-    	const cancel_handler = () => $$invalidate(13, mailDialog = false);
+    	let backgroundUrl = background ? background : icon_repo + "/background.svg";
+    	let avatarUrl = avatar ? avatar : icon_repo + "/avatar.svg";
+    	const click_handler = () => $$invalidate(11, mailDialog = true);
+    	const mail_handler = () => $$invalidate(11, mailDialog = false);
+    	const cancel_handler = () => $$invalidate(11, mailDialog = false);
 
     	$$self.$$set = $$props => {
     		if ('name' in $$props) $$invalidate(0, name = $$props.name);
@@ -1603,8 +1595,8 @@
     		if ('discord' in $$props) $$invalidate(8, discord = $$props.discord);
     		if ('youtube' in $$props) $$invalidate(9, youtube = $$props.youtube);
     		if ('twitch' in $$props) $$invalidate(10, twitch = $$props.twitch);
-    		if ('avatar' in $$props) $$invalidate(11, avatar = $$props.avatar);
-    		if ('background' in $$props) $$invalidate(12, background = $$props.background);
+    		if ('avatar' in $$props) $$invalidate(14, avatar = $$props.avatar);
+    		if ('background' in $$props) $$invalidate(15, background = $$props.background);
     	};
 
     	return [
@@ -1619,9 +1611,11 @@
     		discord,
     		youtube,
     		twitch,
+    		mailDialog,
+    		backgroundUrl,
+    		avatarUrl,
     		avatar,
     		background,
-    		mailDialog,
     		click_handler,
     		mail_handler,
     		cancel_handler
@@ -1644,8 +1638,8 @@
     			discord: 8,
     			youtube: 9,
     			twitch: 10,
-    			avatar: 11,
-    			background: 12
+    			avatar: 14,
+    			background: 15
     		});
     	}
     }

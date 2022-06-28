@@ -14,11 +14,13 @@
   export let youtube = "";
   export let twitch = "";
   export let avatar = "";
-  export let background = "";
+  export let background = null;
 
-  let icon_repo = "https://social-icons.arweave.dev";
+  let icon_repo =
+    "https://arweave.net/T2Kh2uOv3myw8L6BPE6kySs2QXjh8R3B1KolcW_MFQA";
   let mailDialog = false;
-
+  let backgroundUrl = background ? background : icon_repo + "/background.svg";
+  let avatarUrl = avatar ? avatar : icon_repo + "/avatar.svg";
   function isEmpty(v) {
     return v.length === 0 ? true : false;
   }
@@ -26,7 +28,7 @@
 
 <div class="h-[900px]">
   <div
-    class="bg-[url('{background}')] bg-cover bg-no-repeat w-full h-[660px] mb-[50px]"
+    class="bg-[url('{backgroundUrl}')] bg-cover bg-no-repeat w-full h-[660px] mb-[50px]"
   >
     <div class="w-full h-full flex flex-col justify-between relative">
       <ul class="w-full flex flex-row-reverse p-5">
@@ -173,8 +175,8 @@
       <div class="w-full flex m-5 absolute top-[565px] left-0">
         <img
           alt="avatar"
-          src={avatar}
-          class="ml-5 mr-5 shadow-xl rounded-full border-4 max-w-[265px] bg-base-300"
+          src={avatarUrl}
+          class="ml-5 mr-5 shadow-xl rounded-full border-4 h-[250px] w-[250px] bg-base-300"
         />
         <div class="flex flex-col justify-center">
           <p class="m-1 text-3xl tracking-tight text-base-600">{name}</p>
