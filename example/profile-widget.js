@@ -1717,6 +1717,7 @@
     			attr(figure, "class", "flex justify-center");
     			attr(p0, "class", "m-1 text-3xl tracking-tight text-base-600");
     			attr(p1, "class", "m-1 text-xl text-base-600");
+<<<<<<< HEAD
     			attr(div0, "class", "flex flex-col justify-center ml-8");
     			attr(ul0, "class", "w-full flex flex-row-reverse space-x-4 p-5");
     			attr(div1, "class", "bg-[url('" + /*backgroundUrl*/ ctx[12] + "')] bg-cover bg-no-repeat w-full h-[100px] mb-[10px]");
@@ -1732,6 +1733,13 @@
     			attr(div5, "class", "w-full h-full flex flex-col justify-between relative");
     			attr(div6, "class", "bg-[url('" + /*backgroundUrl*/ ctx[12] + "')] bg-cover bg-no-repeat w-full h-[660px] mb-[50px]");
     			attr(div7, "class", "hidden md:block h-[900px]");
+=======
+    			attr(div0, "class", "flex flex-col justify-center");
+    			attr(div1, "class", "w-full flex m-5 absolute top-[200px] left-0");
+    			attr(div2, "class", "w-full h-full flex flex-col justify-between relative");
+    			attr(div3, "class", "bg-[url('" + /*backgroundUrl*/ ctx[12] + "')] bg-cover bg-no-repeat w-full h-[300px] mb-[50px]");
+    			attr(div4, "class", "h-[400px]");
+>>>>>>> 3b9e57b720b3c574e60cc9560bb17c25a05f978d
     		},
     		m(target, anchor) {
     			insert(target, div2, anchor);
