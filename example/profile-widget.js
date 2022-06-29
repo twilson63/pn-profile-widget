@@ -1342,10 +1342,10 @@
     			attr(p0, "class", "m-1 text-3xl tracking-tight text-base-600");
     			attr(p1, "class", "m-1 text-xl text-base-600");
     			attr(div0, "class", "flex flex-col justify-center");
-    			attr(div1, "class", "w-full flex m-5 absolute top-[565px] left-0");
+    			attr(div1, "class", "w-full flex m-5 absolute top-[200px] left-0");
     			attr(div2, "class", "w-full h-full flex flex-col justify-between relative");
-    			attr(div3, "class", "bg-[url('" + /*backgroundUrl*/ ctx[12] + "')] bg-cover bg-no-repeat w-full h-[660px] mb-[50px]");
-    			attr(div4, "class", "h-[900px]");
+    			attr(div3, "class", "bg-[url('" + /*backgroundUrl*/ ctx[12] + "')] bg-cover bg-no-repeat w-full h-[300px] mb-[50px]");
+    			attr(div4, "class", "h-[400px]");
     		},
     		m(target, anchor) {
     			insert(target, div4, anchor);

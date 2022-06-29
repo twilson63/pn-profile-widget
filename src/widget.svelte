@@ -26,9 +26,9 @@
   }
 </script>
 
-<div class="h-[900px]">
+<div class="h-[400px]">
   <div
-    class="bg-[url('{backgroundUrl}')] bg-cover bg-no-repeat w-full h-[660px] mb-[50px]"
+    class="bg-[url('{backgroundUrl}')] bg-cover bg-no-repeat w-full h-[300px] mb-[50px]"
   >
     <div class="w-full h-full flex flex-col justify-between relative">
       <ul class="w-full flex flex-row-reverse p-5">
@@ -172,7 +172,7 @@
           </li>
         {/if}
       </ul>
-      <div class="w-full flex m-5 absolute top-[565px] left-0">
+      <div class="w-full flex m-5 absolute top-[200px] left-0">
         <img
           alt="avatar"
           src={avatarUrl}
