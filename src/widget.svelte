@@ -19,6 +19,7 @@
   let icon_repo =
     "https://arweave.net/T2Kh2uOv3myw8L6BPE6kySs2QXjh8R3B1KolcW_MFQA";
   let mailDialog = false;
+  let sending = false;
   let backgroundUrl = background ? background : icon_repo + "/background.svg";
   let avatarUrl = avatar ? avatar : icon_repo + "/avatar.svg";
   function isEmpty(v) {
@@ -348,7 +349,20 @@
   <h3 class="text-2xl text-secondary">Message/Tip {name}</h3>
   <Mailform
     address={weavemail}
-    on:mail={() => (mailDialog = false)}
-    on:cancel={() => (mailDialog = false)}
+    on:sending={() => {
+      mailDialog = false;
+      sending = true;
+    }}
+    on:mail={() => {
+      mailDialog = false;
+      sending = false;
+    }}
+    on:cancel={() => {
+      mailDialog = false;
+      sending = false;
+    }}
   />
+</Modal>
+<Modal open={sending} ok={false}>
+  <h3 class="text-2xl text-secondary">Sending message...</h3>
 </Modal>

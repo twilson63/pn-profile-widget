@@ -2,11 +2,17 @@
   import { createEventDispatcher } from "svelte";
 
   export let address = "";
+  let sending = false;
 
   const dispatch = createEventDispatcher();
-  const arweave = Arweave.init({});
+  const arweave = Arweave.init({
+    host: "arweave.net",
+    protocol: "https",
+    port: 443,
+  });
 
   async function send(e) {
+    dispatch("sending");
     if (!arweave) {
       alert("Arweave is required!");
     }
@@ -166,7 +172,7 @@
   </div>
 
   <div class="mt-8 modal-action">
-    <button class="btn">Send</button>
+    <button class="btn" disabled={sending}>Send</button>
     <button
       type="button"
       class="btn btn-outline"

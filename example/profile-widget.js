@@ -655,6 +655,7 @@
     	let t15;
     	let div5;
     	let button0;
+    	let t16;
     	let t17;
     	let button1;
     	let mounted;
@@ -696,7 +697,7 @@
     			t15 = space();
     			div5 = element("div");
     			button0 = element("button");
-    			button0.textContent = "Send";
+    			t16 = text("Send");
     			t17 = space();
     			button1 = element("button");
     			button1.textContent = "Cancel";
@@ -710,6 +711,7 @@
     			attr(div3, "class", "form-control");
     			attr(div4, "class", "modal-body");
     			attr(button0, "class", "btn");
+    			button0.disabled = sending;
     			attr(button1, "type", "button");
     			attr(button1, "class", "btn btn-outline");
     			attr(div5, "class", "mt-8 modal-action");
@@ -732,6 +734,7 @@
     			append(form, t15);
     			append(form, div5);
     			append(div5, button0);
+    			append(button0, t16);
     			append(div5, t17);
     			append(div5, button1);
 
@@ -763,6 +766,8 @@
     	};
     }
 
+    let sending = false;
+
     async function generate_random_bytes(length) {
     	var array = new Uint8Array(length);
     	window.crypto.getRandomValues(array);
@@ -772,9 +777,16 @@
     function instance$1($$self, $$props, $$invalidate) {
     	let { address = "" } = $$props;
     	const dispatch = createEventDispatcher();
-    	const arweave = Arweave.init({});
+
+    	const arweave = Arweave.init({
+    		host: "arweave.net",
+    		protocol: "https",
+    		port: 443
+    	});
 
     	async function send(e) {
+    		dispatch("sending");
+
     		if (!arweave) {
     			alert("Arweave is required!");
     		}
@@ -923,7 +935,7 @@
     	};
     }
 
-    // (61:6) {#if !isEmpty(linkedin)}
+    // (62:6) {#if !isEmpty(linkedin)}
     function create_if_block_16(ctx) {
     	let li;
     	let a;
@@ -957,7 +969,7 @@
     	};
     }
 
-    // (77:6) {#if !isEmpty(github)}
+    // (78:6) {#if !isEmpty(github)}
     function create_if_block_15(ctx) {
     	let li;
     	let a;
@@ -991,7 +1003,7 @@
     	};
     }
 
-    // (93:6) {#if !isEmpty(discord)}
+    // (94:6) {#if !isEmpty(discord)}
     function create_if_block_14(ctx) {
     	let li;
     	let a;
@@ -1025,7 +1037,7 @@
     	};
     }
 
-    // (109:6) {#if !isEmpty(weavemail)}
+    // (110:6) {#if !isEmpty(weavemail)}
     function create_if_block_13(ctx) {
     	let li;
     	let button;
@@ -1044,7 +1056,7 @@
     			append(li, button);
 
     			if (!mounted) {
-    				dispose = listen(button, "click", /*click_handler*/ ctx[16]);
+    				dispose = listen(button, "click", /*click_handler*/ ctx[17]);
     				mounted = true;
     			}
     		},
@@ -1057,7 +1069,7 @@
     	};
     }
 
-    // (120:6) {#if !isEmpty(twitch)}
+    // (121:6) {#if !isEmpty(twitch)}
     function create_if_block_12(ctx) {
     	let li;
     	let a;
@@ -1091,7 +1103,7 @@
     	};
     }
 
-    // (136:6) {#if !isEmpty(instagram)}
+    // (137:6) {#if !isEmpty(instagram)}
     function create_if_block_11(ctx) {
     	let li;
     	let a;
@@ -1125,7 +1137,7 @@
     	};
     }
 
-    // (152:6) {#if !isEmpty(youtube)}
+    // (153:6) {#if !isEmpty(youtube)}
     function create_if_block_10(ctx) {
     	let li;
     	let a;
@@ -1159,7 +1171,7 @@
     	};
     }
 
-    // (168:6) {#if !isEmpty(twitter)}
+    // (169:6) {#if !isEmpty(twitter)}
     function create_if_block_9(ctx) {
     	let li;
     	let a;
@@ -1193,7 +1205,7 @@
     	};
     }
 
-    // (193:8) {#if !isEmpty(facebook)}
+    // (194:8) {#if !isEmpty(facebook)}
     function create_if_block_8(ctx) {
     	let li;
     	let a;
@@ -1227,7 +1239,7 @@
     	};
     }
 
-    // (209:8) {#if !isEmpty(linkedin)}
+    // (210:8) {#if !isEmpty(linkedin)}
     function create_if_block_7(ctx) {
     	let li;
     	let a;
@@ -1261,7 +1273,7 @@
     	};
     }
 
-    // (225:8) {#if !isEmpty(github)}
+    // (226:8) {#if !isEmpty(github)}
     function create_if_block_6(ctx) {
     	let li;
     	let a;
@@ -1295,7 +1307,7 @@
     	};
     }
 
-    // (241:8) {#if !isEmpty(discord)}
+    // (242:8) {#if !isEmpty(discord)}
     function create_if_block_5(ctx) {
     	let li;
     	let a;
@@ -1329,7 +1341,7 @@
     	};
     }
 
-    // (257:8) {#if !isEmpty(weavemail)}
+    // (258:8) {#if !isEmpty(weavemail)}
     function create_if_block_4(ctx) {
     	let li;
     	let button;
@@ -1348,7 +1360,7 @@
     			append(li, button);
 
     			if (!mounted) {
-    				dispose = listen(button, "click", /*click_handler_1*/ ctx[17]);
+    				dispose = listen(button, "click", /*click_handler_1*/ ctx[18]);
     				mounted = true;
     			}
     		},
@@ -1361,7 +1373,7 @@
     	};
     }
 
-    // (268:8) {#if !isEmpty(twitch)}
+    // (269:8) {#if !isEmpty(twitch)}
     function create_if_block_3(ctx) {
     	let li;
     	let a;
@@ -1395,7 +1407,7 @@
     	};
     }
 
-    // (284:8) {#if !isEmpty(instagram)}
+    // (285:8) {#if !isEmpty(instagram)}
     function create_if_block_2(ctx) {
     	let li;
     	let a;
@@ -1429,7 +1441,7 @@
     	};
     }
 
-    // (300:8) {#if !isEmpty(youtube)}
+    // (301:8) {#if !isEmpty(youtube)}
     function create_if_block_1(ctx) {
     	let li;
     	let a;
@@ -1463,7 +1475,7 @@
     	};
     }
 
-    // (316:8) {#if !isEmpty(twitter)}
+    // (317:8) {#if !isEmpty(twitter)}
     function create_if_block(ctx) {
     	let li;
     	let a;
@@ -1497,8 +1509,8 @@
     	};
     }
 
-    // (347:0) <Modal open={mailDialog} ok={false}>
-    function create_default_slot(ctx) {
+    // (348:0) <Modal open={mailDialog} ok={false}>
+    function create_default_slot_1(ctx) {
     	let h3;
     	let t0;
     	let t1;
@@ -1506,8 +1518,9 @@
     	let mailform;
     	let current;
     	mailform = new Mailform({ props: { address: /*weavemail*/ ctx[6] } });
-    	mailform.$on("mail", /*mail_handler*/ ctx[18]);
-    	mailform.$on("cancel", /*cancel_handler*/ ctx[19]);
+    	mailform.$on("sending", /*sending_handler*/ ctx[19]);
+    	mailform.$on("mail", /*mail_handler*/ ctx[20]);
+    	mailform.$on("cancel", /*cancel_handler*/ ctx[21]);
 
     	return {
     		c() {
@@ -1545,6 +1558,26 @@
     			if (detaching) detach(h3);
     			if (detaching) detach(t2);
     			destroy_component(mailform, detaching);
+    		}
+    	};
+    }
+
+    // (366:0) <Modal open={sending} ok={false}>
+    function create_default_slot(ctx) {
+    	let h3;
+
+    	return {
+    		c() {
+    			h3 = element("h3");
+    			h3.textContent = "Sending message...";
+    			attr(h3, "class", "text-2xl text-secondary");
+    		},
+    		m(target, anchor) {
+    			insert(target, h3, anchor);
+    		},
+    		p: noop,
+    		d(detaching) {
+    			if (detaching) detach(h3);
     		}
     	};
     }
@@ -1615,7 +1648,9 @@
     	let p3;
     	let t26;
     	let t27;
-    	let modal;
+    	let modal0;
+    	let t28;
+    	let modal1;
     	let current;
     	let if_block0 = show_if_17 && create_if_block_17(ctx);
     	let if_block1 = show_if_16 && create_if_block_16(ctx);
@@ -1636,9 +1671,18 @@
     	let if_block16 = show_if_1 && create_if_block_1(ctx);
     	let if_block17 = show_if && create_if_block(ctx);
 
-    	modal = new Modal({
+    	modal0 = new Modal({
     			props: {
     				open: /*mailDialog*/ ctx[11],
+    				ok: false,
+    				$$slots: { default: [create_default_slot_1] },
+    				$$scope: { ctx }
+    			}
+    		});
+
+    	modal1 = new Modal({
+    			props: {
+    				open: /*sending*/ ctx[12],
     				ok: false,
     				$$slots: { default: [create_default_slot] },
     				$$scope: { ctx }
@@ -1710,36 +1754,30 @@
     			p3 = element("p");
     			t26 = text(/*bio*/ ctx[1]);
     			t27 = space();
-    			create_component(modal.$$.fragment);
+    			create_component(modal0.$$.fragment);
+    			t28 = space();
+    			create_component(modal1.$$.fragment);
     			attr(img0, "alt", "avatar");
-    			if (!src_url_equal(img0.src, img0_src_value = /*avatarUrl*/ ctx[13])) attr(img0, "src", img0_src_value);
+    			if (!src_url_equal(img0.src, img0_src_value = /*avatarUrl*/ ctx[14])) attr(img0, "src", img0_src_value);
     			attr(img0, "class", "shadow-xl rounded-full border-4 h-[250px] w-[250px] bg-base-300");
     			attr(figure, "class", "flex justify-center");
     			attr(p0, "class", "m-1 text-3xl tracking-tight text-base-600");
     			attr(p1, "class", "m-1 text-xl text-base-600");
-<<<<<<< HEAD
     			attr(div0, "class", "flex flex-col justify-center ml-8");
     			attr(ul0, "class", "w-full flex flex-row-reverse space-x-4 p-5");
-    			attr(div1, "class", "bg-[url('" + /*backgroundUrl*/ ctx[12] + "')] bg-cover bg-no-repeat w-full h-[100px] mb-[10px]");
+    			attr(div1, "class", "bg-[url('" + /*backgroundUrl*/ ctx[13] + "')] bg-cover bg-no-repeat w-full h-[100px] mb-[10px]");
     			attr(div2, "class", "md:hidden h-[400px]");
     			attr(ul1, "class", "w-full flex flex-row-reverse p-5");
     			attr(img1, "alt", "avatar");
-    			if (!src_url_equal(img1.src, img1_src_value = /*avatarUrl*/ ctx[13])) attr(img1, "src", img1_src_value);
+    			if (!src_url_equal(img1.src, img1_src_value = /*avatarUrl*/ ctx[14])) attr(img1, "src", img1_src_value);
     			attr(img1, "class", "ml-5 mr-5 shadow-xl rounded-full border-4 h-[250px] w-[250px] bg-base-300");
     			attr(p2, "class", "m-1 text-3xl tracking-tight text-base-600");
     			attr(p3, "class", "m-1 text-xl text-base-600");
     			attr(div3, "class", "flex flex-col justify-center");
-    			attr(div4, "class", "w-full flex m-5 absolute top-[565px] left-0");
+    			attr(div4, "class", "w-full flex m-5 absolute top-[200px] left-0");
     			attr(div5, "class", "w-full h-full flex flex-col justify-between relative");
-    			attr(div6, "class", "bg-[url('" + /*backgroundUrl*/ ctx[12] + "')] bg-cover bg-no-repeat w-full h-[660px] mb-[50px]");
-    			attr(div7, "class", "hidden md:block h-[900px]");
-=======
-    			attr(div0, "class", "flex flex-col justify-center");
-    			attr(div1, "class", "w-full flex m-5 absolute top-[200px] left-0");
-    			attr(div2, "class", "w-full h-full flex flex-col justify-between relative");
-    			attr(div3, "class", "bg-[url('" + /*backgroundUrl*/ ctx[12] + "')] bg-cover bg-no-repeat w-full h-[300px] mb-[50px]");
-    			attr(div4, "class", "h-[400px]");
->>>>>>> 3b9e57b720b3c574e60cc9560bb17c25a05f978d
+    			attr(div6, "class", "bg-[url('" + /*backgroundUrl*/ ctx[13] + "')] bg-cover bg-no-repeat w-full h-[300px] mb-[50px]");
+    			attr(div7, "class", "hidden md:block h-[400px]");
     		},
     		m(target, anchor) {
     			insert(target, div2, anchor);
@@ -1805,7 +1843,9 @@
     			append(div3, p3);
     			append(p3, t26);
     			insert(target, t27, anchor);
-    			mount_component(modal, target, anchor);
+    			mount_component(modal0, target, anchor);
+    			insert(target, t28, anchor);
+    			mount_component(modal1, target, anchor);
     			current = true;
     		},
     		p(ctx, [dirty]) {
@@ -2083,22 +2123,32 @@
 
     			if (!current || dirty & /*name*/ 1) set_data(t24, /*name*/ ctx[0]);
     			if (!current || dirty & /*bio*/ 2) set_data(t26, /*bio*/ ctx[1]);
-    			const modal_changes = {};
-    			if (dirty & /*mailDialog*/ 2048) modal_changes.open = /*mailDialog*/ ctx[11];
+    			const modal0_changes = {};
+    			if (dirty & /*mailDialog*/ 2048) modal0_changes.open = /*mailDialog*/ ctx[11];
 
-    			if (dirty & /*$$scope, weavemail, mailDialog, name*/ 1050689) {
-    				modal_changes.$$scope = { dirty, ctx };
+    			if (dirty & /*$$scope, weavemail, mailDialog, sending, name*/ 4200513) {
+    				modal0_changes.$$scope = { dirty, ctx };
     			}
 
-    			modal.$set(modal_changes);
+    			modal0.$set(modal0_changes);
+    			const modal1_changes = {};
+    			if (dirty & /*sending*/ 4096) modal1_changes.open = /*sending*/ ctx[12];
+
+    			if (dirty & /*$$scope*/ 4194304) {
+    				modal1_changes.$$scope = { dirty, ctx };
+    			}
+
+    			modal1.$set(modal1_changes);
     		},
     		i(local) {
     			if (current) return;
-    			transition_in(modal.$$.fragment, local);
+    			transition_in(modal0.$$.fragment, local);
+    			transition_in(modal1.$$.fragment, local);
     			current = true;
     		},
     		o(local) {
-    			transition_out(modal.$$.fragment, local);
+    			transition_out(modal0.$$.fragment, local);
+    			transition_out(modal1.$$.fragment, local);
     			current = false;
     		},
     		d(detaching) {
@@ -2124,7 +2174,9 @@
     			if (if_block16) if_block16.d();
     			if (if_block17) if_block17.d();
     			if (detaching) detach(t27);
-    			destroy_component(modal, detaching);
+    			destroy_component(modal0, detaching);
+    			if (detaching) detach(t28);
+    			destroy_component(modal1, detaching);
     		}
     	};
     }
@@ -2150,12 +2202,26 @@
     	let { avatar = "" } = $$props;
     	let { background = null } = $$props;
     	let mailDialog = false;
+    	let sending = false;
     	let backgroundUrl = background ? background : icon_repo + "/background.svg";
     	let avatarUrl = avatar ? avatar : icon_repo + "/avatar.svg";
     	const click_handler = () => $$invalidate(11, mailDialog = true);
     	const click_handler_1 = () => $$invalidate(11, mailDialog = true);
-    	const mail_handler = () => $$invalidate(11, mailDialog = false);
-    	const cancel_handler = () => $$invalidate(11, mailDialog = false);
+
+    	const sending_handler = () => {
+    		$$invalidate(11, mailDialog = false);
+    		$$invalidate(12, sending = true);
+    	};
+
+    	const mail_handler = () => {
+    		$$invalidate(11, mailDialog = false);
+    		$$invalidate(12, sending = false);
+    	};
+
+    	const cancel_handler = () => {
+    		$$invalidate(11, mailDialog = false);
+    		$$invalidate(12, sending = false);
+    	};
 
     	$$self.$$set = $$props => {
     		if ('name' in $$props) $$invalidate(0, name = $$props.name);
@@ -2169,8 +2235,8 @@
     		if ('discord' in $$props) $$invalidate(8, discord = $$props.discord);
     		if ('youtube' in $$props) $$invalidate(9, youtube = $$props.youtube);
     		if ('twitch' in $$props) $$invalidate(10, twitch = $$props.twitch);
-    		if ('avatar' in $$props) $$invalidate(14, avatar = $$props.avatar);
-    		if ('background' in $$props) $$invalidate(15, background = $$props.background);
+    		if ('avatar' in $$props) $$invalidate(15, avatar = $$props.avatar);
+    		if ('background' in $$props) $$invalidate(16, background = $$props.background);
     	};
 
     	return [
@@ -2186,12 +2252,14 @@
     		youtube,
     		twitch,
     		mailDialog,
+    		sending,
     		backgroundUrl,
     		avatarUrl,
     		avatar,
     		background,
     		click_handler,
     		click_handler_1,
+    		sending_handler,
     		mail_handler,
     		cancel_handler
     	];
@@ -2213,8 +2281,8 @@
     			discord: 8,
     			youtube: 9,
     			twitch: 10,
-    			avatar: 14,
-    			background: 15
+    			avatar: 15,
+    			background: 16
     		});
     	}
     }
