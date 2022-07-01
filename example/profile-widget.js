@@ -2449,7 +2449,7 @@
     }
 
     function instance($$self, $$props, $$invalidate) {
-    	let { addr = "vh-NTHVvlKZqRxc8LyyTNok65yQ55a_PJ1zWLb9G2JI" } = $$props;
+    	let { addr = "" } = $$props;
 
     	//let icon_repo = "https://social-icons.arweave.dev";
     	let mailDialog = false;

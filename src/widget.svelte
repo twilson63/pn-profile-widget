@@ -3,22 +3,8 @@
   import Mailform from "./components/mailform.svelte";
   import { getProfile } from "./lib/arweave.js";
 
-  export let addr = "vh-NTHVvlKZqRxc8LyyTNok65yQ55a_PJ1zWLb9G2JI";
-  /*
-  export let name = "Internet Explorer";
-  export let bio = "A curious traveler who likes to build neat things.";
-  export let twitter = "";
-  export let instagram = "";
-  export let linkedin = "";
-  export let facebook = "";
-  export let weavemail = "";
-  export let github = "";
-  export let discord = "";
-  export let youtube = "";
-  export let twitch = "";
-  export let avatar = "";
-  export let background = null;
-  */
+  export let addr = "";
+
   let icon_repo =
     "https://arweave.net/T2Kh2uOv3myw8L6BPE6kySs2QXjh8R3B1KolcW_MFQA";
   //let icon_repo = "https://social-icons.arweave.dev";
@@ -196,7 +182,7 @@
       </ul>
     </div>
   </div>
-  <div class="hidden md:block h-[475px]">
+  <div class="hidden md:block h-[450px]">
     <div
       class="bg-[url('{profile.background ||
         defaultBackground}')] bg-cover bg-no-repeat w-full h-[300px] mb-[50px]"
