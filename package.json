@@ -6,6 +6,7 @@
   "author": "Tom Wilson <tom@hyper.io>",
   "license": "MIT",
   "devDependencies": {
+    "@rollup/plugin-commonjs": "^22.0.1",
     "@rollup/plugin-node-resolve": "^13.3.0",
     "rollup": "^2.75.7",
     "rollup-plugin-svelte": "^7.1.0",
@@ -17,5 +18,8 @@
     "deploy": "arkb deploy dist --use-bundler https://node2.bundlr.network --wallet mywallet.json",
     "deploy:icons": "arkb deploy social-icons --use-bundler https://node2.bundlr.network --wallet mywallet.json",
     "example": "w3 example"
+  },
+  "dependencies": {
+    "ramda": "^0.28.0"
   }
 }
