@@ -2911,10 +2911,8 @@
   `;
       return arweave.api.post('graphql', { query })
         .then(({ data: { data: { transactions: { edges } } } }) => edges.map(e => e.node))
-        .then(x => (console.log(x), x))
         .then(formatNodes)
         .then(head_1)
-        .then(x => (console.log(x.id), x))
         .then(record => arweave.api.get(record.id))
         .then(({ data }) => data)
 
