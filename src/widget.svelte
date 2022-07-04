@@ -37,7 +37,9 @@
       </figure>
       <div class="flex flex-col justify-center ml-8">
         <p class="m-1 text-3xl tracking-tight text-base-600">{profile.name}</p>
-        <p class="m-1 text-xl text-base-600">{profile.bio}</p>
+        <p class="m-1 text-xl text-base-600">
+          {profile.bio || "A curious traveler who likes to build neat things."}
+        </p>
       </div>
       <ul class="w-full flex flex-row-reverse space-x-4 p-5">
         {#if !isEmpty(profile.links.facebook)}
@@ -339,7 +341,10 @@
             <p class="m-1 text-3xl tracking-tight text-base-600">
               {profile.name}
             </p>
-            <p class="m-1 text-xl text-base-600">{profile.bio}</p>
+            <p class="m-1 text-xl text-base-600">
+              {profile.bio ||
+                "A curious traveler who likes to build neat things."}
+            </p>
           </div>
         </div>
       </div>

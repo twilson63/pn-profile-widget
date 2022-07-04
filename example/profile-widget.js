@@ -2981,7 +2981,7 @@
     	let t1;
     	let t2;
     	let p1;
-    	let t3_value = /*profile*/ ctx[10].bio + "";
+    	let t3_value = (/*profile*/ ctx[10].bio || "A curious traveler who likes to build neat things.") + "";
     	let t3;
     	let t4;
     	let ul0;
@@ -3036,7 +3036,7 @@
     	let t24;
     	let t25;
     	let p3;
-    	let t26_value = /*profile*/ ctx[10].bio + "";
+    	let t26_value = (/*profile*/ ctx[10].bio || "A curious traveler who likes to build neat things.") + "";
     	let t26;
     	let div6_class_value;
     	let t27;
@@ -3231,7 +3231,7 @@
     			}
 
     			if ((!current || dirty & /*addr*/ 1) && t1_value !== (t1_value = /*profile*/ ctx[10].name + "")) set_data(t1, t1_value);
-    			if ((!current || dirty & /*addr*/ 1) && t3_value !== (t3_value = /*profile*/ ctx[10].bio + "")) set_data(t3, t3_value);
+    			if ((!current || dirty & /*addr*/ 1) && t3_value !== (t3_value = (/*profile*/ ctx[10].bio || "A curious traveler who likes to build neat things.") + "")) set_data(t3, t3_value);
     			if (dirty & /*addr*/ 1) show_if_17 = !isEmpty(/*profile*/ ctx[10].links.facebook);
 
     			if (show_if_17) {
@@ -3511,7 +3511,7 @@
     			}
 
     			if ((!current || dirty & /*addr*/ 1) && t24_value !== (t24_value = /*profile*/ ctx[10].name + "")) set_data(t24, t24_value);
-    			if ((!current || dirty & /*addr*/ 1) && t26_value !== (t26_value = /*profile*/ ctx[10].bio + "")) set_data(t26, t26_value);
+    			if ((!current || dirty & /*addr*/ 1) && t26_value !== (t26_value = (/*profile*/ ctx[10].bio || "A curious traveler who likes to build neat things.") + "")) set_data(t26, t26_value);
 
     			if (!current || dirty & /*addr*/ 1 && div6_class_value !== (div6_class_value = "bg-[url('" + (/*profile*/ ctx[10].background || /*defaultBackground*/ ctx[3]) + "')] bg-cover bg-no-repeat w-full h-[300px] mb-[50px]")) {
     				attr(div6, "class", div6_class_value);
@@ -3563,7 +3563,7 @@
     	};
     }
 
-    // (43:8) {#if !isEmpty(profile.links.facebook)}
+    // (45:8) {#if !isEmpty(profile.links.facebook)}
     function create_if_block_17(ctx) {
     	let li;
     	let a;
@@ -3597,7 +3597,7 @@
     	};
     }
 
-    // (59:8) {#if !isEmpty(profile.links.linkedin)}
+    // (61:8) {#if !isEmpty(profile.links.linkedin)}
     function create_if_block_16(ctx) {
     	let li;
     	let a;
@@ -3631,7 +3631,7 @@
     	};
     }
 
-    // (75:8) {#if !isEmpty(profile.links.github)}
+    // (77:8) {#if !isEmpty(profile.links.github)}
     function create_if_block_15(ctx) {
     	let li;
     	let a;
@@ -3665,7 +3665,7 @@
     	};
     }
 
-    // (91:8) {#if !isEmpty(profile.links.discord)}
+    // (93:8) {#if !isEmpty(profile.links.discord)}
     function create_if_block_14(ctx) {
     	let li;
     	let a;
@@ -3699,7 +3699,7 @@
     	};
     }
 
-    // (107:8) {#if !isEmpty(profile.owner)}
+    // (109:8) {#if !isEmpty(profile.owner)}
     function create_if_block_13(ctx) {
     	let li;
     	let button;
@@ -3731,7 +3731,7 @@
     	};
     }
 
-    // (118:8) {#if !isEmpty(profile.links.twitch)}
+    // (120:8) {#if !isEmpty(profile.links.twitch)}
     function create_if_block_12(ctx) {
     	let li;
     	let a;
@@ -3765,7 +3765,7 @@
     	};
     }
 
-    // (134:8) {#if !isEmpty(profile.links.instagram)}
+    // (136:8) {#if !isEmpty(profile.links.instagram)}
     function create_if_block_11(ctx) {
     	let li;
     	let a;
@@ -3799,7 +3799,7 @@
     	};
     }
 
-    // (150:8) {#if !isEmpty(profile.links.youtube)}
+    // (152:8) {#if !isEmpty(profile.links.youtube)}
     function create_if_block_10(ctx) {
     	let li;
     	let a;
@@ -3833,7 +3833,7 @@
     	};
     }
 
-    // (166:8) {#if !isEmpty(profile.links.twitter)}
+    // (168:8) {#if !isEmpty(profile.links.twitter)}
     function create_if_block_9(ctx) {
     	let li;
     	let a;
@@ -3867,7 +3867,7 @@
     	};
     }
 
-    // (192:10) {#if !isEmpty(profile.links.facebook)}
+    // (194:10) {#if !isEmpty(profile.links.facebook)}
     function create_if_block_8(ctx) {
     	let li;
     	let a;
@@ -3901,7 +3901,7 @@
     	};
     }
 
-    // (208:10) {#if !isEmpty(profile.links.linkedin)}
+    // (210:10) {#if !isEmpty(profile.links.linkedin)}
     function create_if_block_7(ctx) {
     	let li;
     	let a;
@@ -3935,7 +3935,7 @@
     	};
     }
 
-    // (224:10) {#if !isEmpty(profile.links.github)}
+    // (226:10) {#if !isEmpty(profile.links.github)}
     function create_if_block_6(ctx) {
     	let li;
     	let a;
@@ -3969,7 +3969,7 @@
     	};
     }
 
-    // (240:10) {#if !isEmpty(profile.links.discord)}
+    // (242:10) {#if !isEmpty(profile.links.discord)}
     function create_if_block_5(ctx) {
     	let li;
     	let a;
@@ -4003,7 +4003,7 @@
     	};
     }
 
-    // (256:10) {#if !isEmpty(profile.owner)}
+    // (258:10) {#if !isEmpty(profile.owner)}
     function create_if_block_4(ctx) {
     	let li;
     	let button;
@@ -4035,7 +4035,7 @@
     	};
     }
 
-    // (267:10) {#if !isEmpty(profile.links.twitch)}
+    // (269:10) {#if !isEmpty(profile.links.twitch)}
     function create_if_block_3(ctx) {
     	let li;
     	let a;
@@ -4069,7 +4069,7 @@
     	};
     }
 
-    // (283:10) {#if !isEmpty(profile.links.instagram)}
+    // (285:10) {#if !isEmpty(profile.links.instagram)}
     function create_if_block_2(ctx) {
     	let li;
     	let a;
@@ -4103,7 +4103,7 @@
     	};
     }
 
-    // (299:10) {#if !isEmpty(profile.links.youtube)}
+    // (301:10) {#if !isEmpty(profile.links.youtube)}
     function create_if_block_1(ctx) {
     	let li;
     	let a;
@@ -4137,7 +4137,7 @@
     	};
     }
 
-    // (315:10) {#if !isEmpty(profile.links.twitter)}
+    // (317:10) {#if !isEmpty(profile.links.twitter)}
     function create_if_block(ctx) {
     	let li;
     	let a;
@@ -4171,7 +4171,7 @@
     	};
     }
 
-    // (348:2) <Modal open={mailDialog} ok={false}>
+    // (353:2) <Modal open={mailDialog} ok={false}>
     function create_default_slot_1(ctx) {
     	let h3;
     	let t0;
@@ -4241,7 +4241,7 @@
     	};
     }
 
-    // (370:0) <Modal open={sending} ok={false}>
+    // (375:0) <Modal open={sending} ok={false}>
     function create_default_slot(ctx) {
     	let h3;
 
