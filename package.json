@@ -15,7 +15,7 @@
   },
   "scripts": {
     "build": "rollup -c",
-    "deploy": "arkb deploy dist --use-bundler https://node2.bundlr.network --wallet mywallet.json",
+    "deploy": "arkb deploy dist --use-bundler https://node2.bundlr.network --wallet wallet.json",
     "deploy:icons": "arkb deploy social-icons --use-bundler https://node2.bundlr.network --wallet mywallet.json",
     "example": "w3 example"
   },

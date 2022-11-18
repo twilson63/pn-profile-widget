@@ -3153,7 +3153,7 @@
     			attr(p2, "class", "m-1 text-3xl tracking-tight text-base-600");
     			attr(p3, "class", "m-1 text-xl text-base-600");
     			attr(div3, "class", "flex flex-col justify-center");
-    			attr(div4, "class", "w-full flex m-5 absolute top-[200px] left-0");
+    			attr(div4, "class", "flex-1 flex m-5 absolute top-[200px] left-0");
     			attr(div5, "class", "w-full h-full flex flex-col justify-between relative");
     			attr(div6, "class", div6_class_value = "bg-[url('" + (/*profile*/ ctx[10].background || /*defaultBackground*/ ctx[3]) + "')] bg-cover bg-no-repeat w-full h-[300px] mb-[50px]");
     			attr(div7, "class", "hidden md:block h-[450px]");
@@ -3880,7 +3880,7 @@
     			a = element("a");
     			button = element("button");
     			set_style(button, "background-image", "url(" + icon_repo + "/facebook-icon.png)");
-    			attr(button, "class", "w-[94px] h-[94px] m-5 rounded-xl bg-cover bg-no-repeat");
+    			attr(button, "class", "w-[48px] h-[48px] m-5 rounded-xl bg-cover bg-no-repeat");
     			attr(a, "href", a_href_value = "https://facebook.com/" + /*profile*/ ctx[10].links.facebook);
     			attr(a, "target", "_blank");
     			attr(a, "rel", "noreferrer");
@@ -3914,7 +3914,7 @@
     			a = element("a");
     			button = element("button");
     			set_style(button, "background-image", "url(" + icon_repo + "/linkedin-icon.png)");
-    			attr(button, "class", "w-[94px] h-[94px] m-5 rounded-xl bg-cover bg-no-repeat");
+    			attr(button, "class", "w-[48px] h-[48px] m-5 rounded-xl bg-cover bg-no-repeat");
     			attr(a, "href", a_href_value = "https://www.linkedin.com/in/" + /*profile*/ ctx[10].links.linkedin);
     			attr(a, "target", "_blank");
     			attr(a, "rel", "noreferrer");
@@ -3948,7 +3948,7 @@
     			a = element("a");
     			button = element("button");
     			set_style(button, "background-image", "url(" + icon_repo + "/github-icon.png)");
-    			attr(button, "class", "w-[94px] h-[94px] m-5 rounded-xl bg-cover bg-no-repeat");
+    			attr(button, "class", "w-[48px] h-[48px] m-5 rounded-xl bg-cover bg-no-repeat");
     			attr(a, "href", a_href_value = "https://github.com/" + /*profile*/ ctx[10].links.github);
     			attr(a, "target", "_blank");
     			attr(a, "rel", "noreferrer");
@@ -3982,7 +3982,7 @@
     			a = element("a");
     			button = element("button");
     			set_style(button, "background-image", "url(" + icon_repo + "/discord-icon.png)");
-    			attr(button, "class", "w-[94px] h-[94px] m-5 rounded-xl bg-cover bg-no-repeat");
+    			attr(button, "class", "w-[48px] h-[48px] m-5 rounded-xl bg-cover bg-no-repeat");
     			attr(a, "href", a_href_value = "https://discord.com/users/" + /*profile*/ ctx[10].links.discord);
     			attr(a, "target", "_blank");
     			attr(a, "rel", "noreferrer");
@@ -4015,7 +4015,7 @@
     			li = element("li");
     			button = element("button");
     			set_style(button, "background-image", "url(" + icon_repo + "/arweave-mail-icon.png)");
-    			attr(button, "class", "w-[94px] h-[94px] m-5 rounded-xl bg-cover bg-no-repeat");
+    			attr(button, "class", "w-[48px] h-[48px] m-5 rounded-xl bg-cover bg-no-repeat");
     		},
     		m(target, anchor) {
     			insert(target, li, anchor);
@@ -4048,7 +4048,7 @@
     			a = element("a");
     			button = element("button");
     			set_style(button, "background-image", "url(" + icon_repo + "/twitch-icon.png)");
-    			attr(button, "class", "w-[94px] h-[94px] m-5 rounded-xl bg-cover bg-no-repeat");
+    			attr(button, "class", "w-[48px] h-[48px] m-5 rounded-xl bg-cover bg-no-repeat");
     			attr(a, "href", a_href_value = "https://twitch.com/" + /*profile*/ ctx[10].links.twitch);
     			attr(a, "target", "_blank");
     			attr(a, "rel", "noreferrer");
@@ -4082,7 +4082,7 @@
     			a = element("a");
     			button = element("button");
     			set_style(button, "background-image", "url(" + icon_repo + "/instagram-icon.png)");
-    			attr(button, "class", "w-[94px] h-[94px] m-5 rounded-xl bg-cover bg-no-repeat");
+    			attr(button, "class", "w-[48px] h-[48px] m-5 rounded-xl bg-cover bg-no-repeat");
     			attr(a, "href", a_href_value = "https://instagram.com/" + /*profile*/ ctx[10].links.instagram);
     			attr(a, "target", "_blank");
     			attr(a, "rel", "noreferrer");
@@ -4116,7 +4116,7 @@
     			a = element("a");
     			button = element("button");
     			set_style(button, "background-image", "url(" + icon_repo + "/youtube-icon.png)");
-    			attr(button, "class", "w-[94px] h-[94px] m-5 rounded-xl bg-cover bg-no-repeat");
+    			attr(button, "class", "w-[48px] h-[48px] m-5 rounded-xl bg-cover bg-no-repeat");
     			attr(a, "href", a_href_value = "https://youtube.com/c/" + /*profile*/ ctx[10].links.youtube);
     			attr(a, "target", "_blank");
     			attr(a, "rel", "noreferrer");
@@ -4150,7 +4150,7 @@
     			a = element("a");
     			button = element("button");
     			set_style(button, "background-image", "url(" + icon_repo + "/twitter-icon.png)");
-    			attr(button, "class", "w-[94px] h-[94px] m-5 rounded-xl bg-cover bg-no-repeat");
+    			attr(button, "class", "w-[48px] h-[48px] m-5 rounded-xl bg-cover bg-no-repeat");
     			attr(a, "href", a_href_value = "https://twitter.com/" + /*profile*/ ctx[10].links.twitter);
     			attr(a, "target", "_blank");
     			attr(a, "rel", "noreferrer");
